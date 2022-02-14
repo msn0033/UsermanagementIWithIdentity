@@ -1,0 +1,108 @@
+﻿@model IEnumerable<UsermanagementIWithIdentity.ViewModel.UsersViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Add" asp-controller="Users" class="btn btn-primary">Add</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            @*    <th>
+                @Html.DisplayNameFor(model => model.Id)
+                </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Roles)
+            </th>
+            <th>Action</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @*     <td>
+                    @item.Id
+                    </td>*@
+                <td>
+                    @item.FirstName
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @string.Join("-",  @item.Roles.ToList())
+                </td>
+                <td>
+                    @Html.ActionLink("ManageRole", "ManageRole", new {userId=item.Id},new{@class="btn btn-primary"})
+                </td>
+                <td><a class="btn btn-primary" asp-action="Edit" asp-route-Id="@item.Id">Edit</a></td>
+                <td><a href="javascript:;" class="btn btn-danger js-delete" data-id="@item.Id">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+<script>
+
+
+
+
+     var btn=Array.from(document.querySelectorAll(".js-delete"));
+     btn.forEach(e=>{
+          e.addEventListener("click",function(){
+
+              meth( e.getAttribute("data-id"));
+          })
+     })
+
+
+    function meth(e)
+    {
+        const http =new XMLHttpRequest();
+        const urlid="https://localhost:44328/api/users/?Id="+e;
+        console.log(urlid);
+
+        var result= alertify.confirm("هل متاكد من الحذف.",
+                       function(){//callback function is ok
+                          alertify.success('ok');
+                          http.open("Delete",urlid);
+                          http.onload=()=>{
+                         /*  responseهذا داله في حال يوجد  */
+                          }
+                          http.send();
+
+
+                        },
+                      function(){//callback function is Cancel
+                         alertify.error('Cancel');
+                       }
+                  );
+
+    }
+
+
+
+
+
+</script>
+}

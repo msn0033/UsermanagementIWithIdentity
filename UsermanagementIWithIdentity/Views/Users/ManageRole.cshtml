@@ -1,0 +1,31 @@
+﻿@model UserRoleViewModel
+
+@{
+    ViewData["Title"] = "UserRole Manage";
+}
+
+<form method="post">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">
+                <h4 hidden>@Model.userId</h4>
+                <input asp-for="@Model.userName" hidden />
+                <h5>@Model.userName</h5>
+            </div>
+        </div>
+        <div class="card-body">
+            @for (int i = 0; i < Model.Roles.Count; i++)
+            {
+                <div class="form-check">
+                    <input asp-for="Roles[i].roleName" hidden />
+                    <input asp-for="Roles[i].IsSelect" class="form-check-input" />
+                    <label asp-for="Roles[i].IsSelect" class="form-check-label">@Model.Roles[i].roleName</label>
+                </div>
+            }
+        </div>
+        <div class="card-footer">
+            <input type="submit" class="btn btn-primary" value="Save" />
+            <a class="btn btn-primary" asp-action="Index">back to list</a>
+        </div>
+    </div>
+</form>
